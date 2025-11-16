@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"sct-backend-service/app/keys"
 	"sct-backend-service/graph/model"
@@ -38,8 +39,14 @@ func (impl *GraphQLControllerImpl) SendContactInfo(ctx context.Context, input mo
 			return nil, fmt.Errorf("error marshalling JSON: %w", err)
 		}
 
+		webhookURL := os.Getenv(keys.SlackWebhookEnvKey)
+		if webhookURL == "" {
+			impl.deps.Logger.Error("Slack webhook URL is not configured")
+			return nil, fmt.Errorf("slack webhook url is not configured")
+		}
+
 		// Send the HTTP POST request
-		resp, err := http.Post(keys.SlackWebhookURL, "application/json", bytes.NewBuffer(jsonData))
+		resp, err := http.Post(webhookURL, "application/json", bytes.NewBuffer(jsonData))
 		if err != nil {
 			impl.deps.Logger.Error("Error sending message", zap.Error(err))
 			return nil, fmt.Errorf("error sending message: %w", err)
