@@ -3,5 +3,3 @@ cmd/
 .vscode/
 *.md
 !README.md
-go.sum
-
