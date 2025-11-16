@@ -1,25 +1,31 @@
 {
-    "functions": {
-        "api/index.go": {
-            "runtime": "@vercel/go"
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/index.go",
+            "use": "@vercel/go"
         }
-    },
-    "rewrites": [
+    ],
+    "routes": [
         {
-            "source": "/api/graphql",
-            "destination": "/api/index.go"
+            "src": "/api/graphql",
+            "dest": "/api/index.go"
         },
         {
-            "source": "/api/query",
-            "destination": "/api/index.go"
+            "src": "/api/query",
+            "dest": "/api/index.go"
         },
         {
-            "source": "/api/playground",
-            "destination": "/api/index.go"
+            "src": "/api/playground",
+            "dest": "/api/index.go"
         },
         {
-            "source": "/api",
-            "destination": "/api/index.go"
+            "src": "/api",
+            "dest": "/api/index.go"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.go"
         }
     ]
 }
